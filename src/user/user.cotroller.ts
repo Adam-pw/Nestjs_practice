@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { UserServices } from './user.service';
 
 @Controller('user')
@@ -21,5 +29,15 @@ export class UserController {
   getUserById(@Param('id') userId: string) {
     const user = this.userService.findUserById(userId);
     return user;
+  }
+
+  @Delete(':_id')
+  deleteById(@Param('_id') userId: string) {
+    return this.userService.deleteUserById(userId);
+  }
+
+  @Put(':id')
+  updateById(@Param('id') userId: string, @Body('name') userName: string) {
+    return this.userService.updateWholeUser(userId, userName);
   }
 }

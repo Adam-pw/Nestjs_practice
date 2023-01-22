@@ -21,7 +21,11 @@ export class HabitsService {
     return this.habitModel.find().exec();
   }
 
-  findHabitsById(id: string) {
-    return this.habitModel.find({ id }).exec();
+  findHabitsById(id: string): Promise<any> {
+    return this.habitModel.findOne({ id }).exec();
+  }
+
+  deleteHabitById(id: string): Promise<any> {
+    return this.habitModel.deleteOne({ id }).exec();
   }
 }

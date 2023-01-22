@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { HabitsService } from './habits.service';
 
 @Controller('habits')
@@ -28,6 +28,12 @@ export class HabitController {
   @Get(':id')
   getHabitsById(@Param('id') habitId: string) {
     const habit = this.habitsService.findHabitsById(habitId);
+    return habit;
+  }
+
+  @Delete(':id')
+  deleteById(@Param('id') habitId: string) {
+    const habit = this.habitsService.deleteHabitById(habitId);
     return habit;
   }
 }

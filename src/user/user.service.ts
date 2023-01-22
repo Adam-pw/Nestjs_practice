@@ -13,7 +13,7 @@ export class UserServices {
     @InjectModel('Users') private readonly userModel: Model<InterfaceUser>,
   ) {}
 
-  async insertUser(name: string, email: string) {
+  async insertUser(name: string, email: string): Promise<any> {
     const userId = Math.random().toString();
     const newUser = new User(userId, name, email);
     new this.userModel(newUser).save();
@@ -25,6 +25,14 @@ export class UserServices {
   }
 
   async findUserById(id: string): Promise<any> {
-    return await this.userModel.find({ id }).exec();
+    return await this.userModel.findOne({ id }).exec();
+  }
+
+  async deleteUserById(_id: string): Promise<any> {
+    return await this.userModel.deleteOne({ _id }).exec();
+  }
+
+  async updateWholeUser(id: string, name: string): Promise<any> {
+    return await this.userModel.updateOne({ id, name });
   }
 }
