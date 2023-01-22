@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { HabitsService } from './habits.service';
 
 @Controller('habits')
@@ -17,5 +17,17 @@ export class HabitController {
       habitTarget,
     );
     return { id: generatedId };
+  }
+
+  @Get()
+  getAllHabits() {
+    const habits = this.habitsService.findHabits();
+    return habits;
+  }
+
+  @Get(':id')
+  getHabitsById(@Param('id') habitId: string) {
+    const habit = this.habitsService.findHabitsById(habitId);
+    return habit;
   }
 }

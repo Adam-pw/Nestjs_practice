@@ -16,4 +16,12 @@ export class HabitsService {
     new this.habitModel(newHabit).save();
     return habitId;
   }
+
+  findHabits() {
+    return this.habitModel.find().exec();
+  }
+
+  findHabitsById(id: string) {
+    return this.habitModel.find({ id }).exec();
+  }
 }
