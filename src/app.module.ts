@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { HabitsModule } from './habits/habits.module';
 import { UserModule } from './user/user.module';
+import { AbcdModule } from './abcd/abcd.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { UserModule } from './user/user.module';
     ),
     HabitsModule,
     UserModule,
+    AbcdModule,
   ],
   controllers: [AppController],
   providers: [AppService],

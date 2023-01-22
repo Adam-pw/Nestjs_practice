@@ -11,21 +11,23 @@ export class HabitsService {
   ) {}
 
   insertHabit(name: string, description: string, target: number) {
-    const habitId = Math.random().toString();
-    const newHabit = new Habit(habitId, name, description, target);
-    new this.habitModel(newHabit).save();
-    return habitId;
+    const newHabit = new Habit(name, description, target);
+    return new this.habitModel(newHabit).save();
   }
 
   findHabits() {
     return this.habitModel.find().exec();
   }
 
-  findHabitsById(id: string): Promise<any> {
-    return this.habitModel.findOne({ id }).exec();
+  findHabitsById(_id: string): Promise<any> {
+    return this.habitModel.findOne({ _id }).exec();
   }
 
-  deleteHabitById(id: string): Promise<any> {
-    return this.habitModel.deleteOne({ id }).exec();
+  deleteHabitById(_id: string): Promise<any> {
+    return this.habitModel.deleteOne({ _id }).exec();
+  }
+
+  async updateWholeHabit(_id: string, name: string): Promise<any> {
+    return await this.habitModel.updateOne({ _id, name });
   }
 }

@@ -8,15 +8,25 @@ import {
   Put,
 } from '@nestjs/common';
 import { UserServices } from './user.service';
-
+import * as bcrypt from 'bcrypt';
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserServices) {}
 
   @Post()
-  addUser(@Body('name') userName: string, @Body('email') userEmail: string) {
-    const generateId = this.userService.insertUser(userName, userEmail);
-    return generateId;
+  async addUser(
+    @Body('name') userName: string,
+    @Body('email') userEmail: string,
+    @Body('password') userPassword: string,
+  ) {
+    const saltOrRounds = 5;
+    const hashedPassword = await bcrypt.hash(userPassword, saltOrRounds);
+    const generatedUser = this.userService.insertUser(
+      userName,
+      userEmail,
+      hashedPassword,
+    );
+    return generatedUser;
   }
 
   @Get()
@@ -25,8 +35,8 @@ export class UserController {
     return users;
   }
 
-  @Get(':id')
-  getUserById(@Param('id') userId: string) {
+  @Get(':_id')
+  getUserById(@Param('_id') userId: string) {
     const user = this.userService.findUserById(userId);
     return user;
   }
@@ -36,8 +46,8 @@ export class UserController {
     return this.userService.deleteUserById(userId);
   }
 
-  @Put(':id')
-  updateById(@Param('id') userId: string, @Body('name') userName: string) {
+  @Put(':_id')
+  updateById(@Param('_id') userId: string, @Body('name') userName: string) {
     return this.userService.updateWholeUser(userId, userName);
   }
 }

@@ -13,26 +13,28 @@ export class UserServices {
     @InjectModel('Users') private readonly userModel: Model<InterfaceUser>,
   ) {}
 
-  async insertUser(name: string, email: string): Promise<any> {
-    const userId = Math.random().toString();
-    const newUser = new User(userId, name, email);
-    new this.userModel(newUser).save();
-    return userId;
+  async insertUser(
+    name: string,
+    email: string,
+    password: string,
+  ): Promise<any> {
+    const newUser = new User(name, email, password);
+    return new this.userModel(newUser).save();
   }
 
   async findUser() {
     return await this.userModel.find().exec();
   }
 
-  async findUserById(id: string): Promise<any> {
-    return await this.userModel.findOne({ id }).exec();
+  async findUserById(_id: string): Promise<any> {
+    return await this.userModel.findOne({ _id }).exec();
   }
 
   async deleteUserById(_id: string): Promise<any> {
     return await this.userModel.deleteOne({ _id }).exec();
   }
 
-  async updateWholeUser(id: string, name: string): Promise<any> {
-    return await this.userModel.updateOne({ id, name });
+  async updateWholeUser(_id: string, name: string): Promise<any> {
+    return await this.userModel.updateOne({ _id, name });
   }
 }

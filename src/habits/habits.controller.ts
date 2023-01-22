@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { HabitsService } from './habits.service';
 
 @Controller('habits')
@@ -11,12 +19,12 @@ export class HabitController {
     @Body('description') habitDescription: string,
     @Body('target') habitTarget: number,
   ) {
-    const generatedId = this.habitsService.insertHabit(
+    const generatedhabit = this.habitsService.insertHabit(
       habitName,
       habitDescription,
       habitTarget,
     );
-    return { id: generatedId };
+    return generatedhabit;
   }
 
   @Get()
@@ -25,15 +33,20 @@ export class HabitController {
     return habits;
   }
 
-  @Get(':id')
-  getHabitsById(@Param('id') habitId: string) {
+  @Get(':_id')
+  getHabitsById(@Param('_id') habitId: string) {
     const habit = this.habitsService.findHabitsById(habitId);
     return habit;
   }
 
-  @Delete(':id')
-  deleteById(@Param('id') habitId: string) {
+  @Delete(':_id')
+  deleteById(@Param('_id') habitId: string) {
     const habit = this.habitsService.deleteHabitById(habitId);
     return habit;
+  }
+
+  @Put(':_id')
+  updateById(@Param('_id') habitId: string, @Body('name') habitName: string) {
+    return this.habitsService.updateWholeHabit(habitId, habitName);
   }
 }
