@@ -4,7 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { HabitsModule } from './habits/habits.module';
 import { UserModule } from './user/user.module';
-import { AbcdModule } from './abcd/abcd.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -13,7 +13,7 @@ import { AbcdModule } from './abcd/abcd.module';
     ),
     HabitsModule,
     UserModule,
-    AbcdModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

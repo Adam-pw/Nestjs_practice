@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { UserServices } from './user.service';
 import * as bcrypt from 'bcrypt';
+
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserServices) {}
