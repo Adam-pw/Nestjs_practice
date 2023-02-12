@@ -6,13 +6,18 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { HabitsService } from './habits.service';
 
+@ApiTags('Habits')
 @Controller('habits')
 export class HabitController {
   constructor(private readonly habitsService: HabitsService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   addHabit(
     @Body('name') habitName: string,

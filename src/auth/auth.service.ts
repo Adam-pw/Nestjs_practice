@@ -1,30 +1,28 @@
-import { Injectable } from '@nestjs/common';
-import { UserServices } from 'src/user/user.service';
+import { Injectable, NotAcceptableException } from '@nestjs/common';
+import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private userService: UserServices,
+    private readonly usersService: UsersService,
     private jwtService: JwtService,
   ) {}
-
-  async validateUser(_id: string, password: string): Promise<any> {
-    const user = await this.userService.findUserById(_id);
-    const saltOrRounds = 5;
-    const hashedPassword = await bcrypt.hash(password, saltOrRounds);
-    console.log(hashedPassword);
-
-    if (user && user.password === hashedPassword) {
+  async validateUser(username: string, password: string): Promise<any> {
+    const user = await this.usersService.getUser({ username });
+    if (!user) return null;
+    const passwordValid = await bcrypt.compare(password, user.password);
+    if (!user) {
+      throw new NotAcceptableException('could not find the user');
+    }
+    if (user && passwordValid) {
       return user;
     }
-
     return null;
   }
-
   async login(user: any) {
-    const payload = { userid: user._id, sub: user.name };
+    const payload = { username: user.username, sub: user._id };
     return {
       access_token: this.jwtService.sign(payload),
     };
